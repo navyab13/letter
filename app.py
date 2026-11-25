@@ -24,7 +24,7 @@ LAYOUT = """
 <article class="letter">
   <p class="dear">Dear {{ recipient }},</p>
   <div class="body">
-NOTE
+    <p>{{ note }}</p>
   </div>
   <p class="sign">— {{ sender }}</p>
 </article>
@@ -53,11 +53,11 @@ def compose():
             result=None,
             error="Recipient, sender, and a note are required.",
         ), 400
-    source = LAYOUT.replace("NOTE", note)
     try:
-        rendered = app.jinja_env.from_string(source).render(
+        rendered = app.jinja_env.from_string(LAYOUT).render(
             recipient=escape(recipient),
             sender=escape(sender),
+            note=note,
         )
     except Exception:
         return render_template(
